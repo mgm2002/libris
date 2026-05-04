@@ -1,257 +1,186 @@
 <template>
   <div
-    class="flex-1 flex justify-center items-center bg-gray-25 dark:bg-gray-900"
+    class="
+      flex-1 flex flex-col items-center justify-center
+      bg-libris-neutral-50
+    "
     :class="{
       'pointer-events-none': loadingDatabase,
       'window-drag': platform !== 'Windows',
     }"
   >
-    <div
-      class="
-        w-full w-form
-        shadow-lg
-        rounded-lg
-        border
-        dark:border-gray-800
-        relative
-        bg-white
-        dark:bg-gray-875
-      "
-      style="height: 700px"
-    >
-      <!-- Welcome to Frappe Books -->
-      <div class="px-4 py-4">
-        <h1 class="text-2xl font-semibold select-none dark:text-gray-25">
-          {{ t`Welcome to Frappe Books` }}
+    <!-- Content column -->
+    <div class="ds-column flex flex-col w-full">
+
+      <!-- ── Header ── -->
+      <div class="flex flex-col items-center gap-3 mb-10 select-none">
+        <img
+          src="../assets/brand/logo.svg"
+          alt="Libris"
+          style="height: 56px"
+          class="select-none"
+        />
+        <h1
+          class="font-semibold text-libris-neutral-900"
+          style="font-size: 32px; line-height: 1.1"
+        >
+          Libris
         </h1>
-        <p class="text-gray-600 dark:text-gray-400 text-base select-none">
-          {{
-            t`Create a new company or select an existing one from your computer`
-          }}
+        <p class="text-sm text-libris-neutral-500 text-center">
+          {{ t`Elige una empresa para continuar o crea una nueva` }}
         </p>
       </div>
 
-      <hr class="dark:border-gray-800" />
+      <!-- ── Company cards + action cards ── -->
+      <div class="flex flex-col gap-3 overflow-y-auto ds-list">
 
-      <!-- New File (Blue Icon) -->
-      <div
-        data-testid="create-new-file"
-        class="px-4 h-row-largest flex flex-row items-center gap-4 p-2"
-        :class="
-          creatingDemo
-            ? ''
-            : 'hover:bg-gray-50 dark:hover:bg-gray-890 cursor-pointer'
-        "
-        @click="newDatabase"
-      >
-        <div class="w-8 h-8 rounded-full bg-blue-500 relative flex-center">
-          <feather-icon
-            name="plus"
-            class="text-white dark:text-gray-900 w-5 h-5"
-          />
-        </div>
-
-        <div>
-          <p class="font-medium dark:text-gray-200">
-            {{ t`New Company` }}
-          </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ t`Create a new company and store it on your computer` }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Existing File (Green Icon) -->
-      <div
-        class="px-4 h-row-largest flex flex-row items-center gap-4 p-2"
-        :class="
-          creatingDemo
-            ? ''
-            : 'hover:bg-gray-50 dark:hover:bg-gray-890 cursor-pointer'
-        "
-        @click="existingDatabase"
-      >
-        <div
-          class="
-            w-8
-            h-8
-            rounded-full
-            bg-green-500
-            dark:bg-green-600
-            relative
-            flex-center
-          "
-        >
-          <feather-icon
-            name="upload"
-            class="w-4 h-4 text-white dark:text-gray-900"
-          />
-        </div>
-        <div>
-          <p class="font-medium dark:text-gray-200">
-            {{ t`Existing Company` }}
-          </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ t`Load an existing company from your computer` }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Create Demo (Pink Icon) -->
-      <div
-        v-if="!files?.length"
-        class="px-4 h-row-largest flex flex-row items-center gap-4 p-2"
-        :class="
-          creatingDemo
-            ? ''
-            : 'hover:bg-gray-50 dark:hover:bg-gray-890 cursor-pointer'
-        "
-        @click="createDemo"
-      >
-        <div
-          class="
-            w-8
-            h-8
-            rounded-full
-            bg-pink-500
-            dark:bg-pink-600
-            relative
-            flex-center
-          "
-        >
-          <feather-icon name="monitor" class="w-4 h-4 text-white" />
-        </div>
-        <div>
-          <p class="font-medium dark:text-gray-200">
-            {{ t`Create Demo` }}
-          </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ t`Create a demo company to try out Frappe Books` }}
-          </p>
-        </div>
-      </div>
-      <hr class="dark:border-gray-800" />
-
-      <!-- File List -->
-      <div class="overflow-y-auto" style="max-height: 340px">
+        <!-- Existing companies -->
         <div
           v-for="(file, i) in files"
           :key="file.dbPath"
-          class="h-row-largest px-4 flex gap-4 items-center"
-          :class="
-            creatingDemo
-              ? ''
-              : 'hover:bg-gray-50 dark:hover:bg-gray-890 cursor-pointer'
-          "
+          class="libris-card window-no-drag"
+          :class="creatingDemo ? 'opacity-60' : 'cursor-pointer'"
           :title="t`${file.companyName} stored at ${file.dbPath}`"
           @click="selectFile(file)"
         >
+          <!-- Gradient avatar with company initial -->
           <div
             class="
-              w-8
-              h-8
-              rounded-full
-              flex
-              justify-center
-              items-center
-              bg-gray-200
-              dark:bg-gray-800
-              text-gray-500
-              font-semibold
-              flex-shrink-0
-              text-base
+              w-10 h-10 rounded-full
+              bg-libris-gradient
+              flex-center flex-shrink-0
+              select-none
             "
           >
-            {{ i + 1 }}
+            <span class="text-sm font-semibold text-white">
+              {{ file.companyName?.[0]?.toUpperCase() ?? '?' }}
+            </span>
           </div>
-          <div class="w-full">
-            <div class="flex justify-between overflow-x-auto items-baseline">
-              <h2 class="font-medium dark:text-gray-200">
-                {{ file.companyName }}
-              </h2>
-              <p
-                class="
-                  whitespace-nowrap
-                  text-sm text-gray-600
-                  dark:text-gray-400
-                "
-              >
-                {{ formatDate(file.modified) }}
-              </p>
-            </div>
-            <p
-              class="
-                text-sm text-gray-600
-                dark:text-gray-400
-                overflow-x-auto
-                no-scrollbar
-                whitespace-nowrap
-              "
-            >
-              {{ truncate(file.dbPath) }}
+
+          <!-- Company name + meta -->
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-libris-neutral-900 truncate">
+              {{ file.companyName }}
+            </p>
+            <p class="text-sm text-libris-neutral-500">
+              {{ formatDate(file.modified) }}
             </p>
           </div>
+
+          <!-- Delete -->
           <button
-            class="
-              ms-auto
-              p-2
-              hover:bg-red-200
-              dark:hover:bg-red-900 dark:hover:bg-opacity-40
-              rounded-full
-              w-8
-              h-8
-              text-gray-600
-              dark:text-gray-400
-              hover:text-red-400
-              dark:hover:text-red-200
-            "
+            class="libris-delete-btn flex-shrink-0 window-no-drag"
             @click.stop="() => deleteDb(i)"
           >
             <feather-icon name="x" class="w-4 h-4" />
           </button>
         </div>
-      </div>
-      <hr v-if="files?.length" class="dark:border-gray-800" />
 
-      <!-- Language Selector -->
-      <div
-        class="
-          w-full
-          flex
-          justify-between
-          items-center
-          absolute
-          p-4
-          text-gray-900
-          dark:text-gray-100
-        "
-        style="top: 100%; transform: translateY(-100%)"
-      >
+        <!-- ── Nueva empresa (dashed, gradient on hover) ── -->
+        <div
+          data-testid="create-new-file"
+          class="libris-card-new window-no-drag"
+          :class="creatingDemo ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'"
+          @click="newDatabase"
+        >
+          <div
+            class="
+              w-10 h-10 rounded-full
+              border-2 border-dashed border-current
+              flex-center flex-shrink-0
+            "
+          >
+            <feather-icon name="plus" class="w-4 h-4" />
+          </div>
+          <div>
+            <p class="font-medium">{{ t`Nueva empresa` }}</p>
+            <p class="text-sm" style="opacity: 0.7">
+              {{ t`Crear y guardar una nueva empresa en tu equipo` }}
+            </p>
+          </div>
+        </div>
+
+        <!-- ── Cargar empresa existente ── -->
+        <div
+          class="libris-card-secondary window-no-drag"
+          :class="creatingDemo ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'"
+          @click="existingDatabase"
+        >
+          <div
+            class="
+              w-10 h-10 rounded-full
+              bg-libris-neutral-100
+              flex-center flex-shrink-0
+            "
+          >
+            <feather-icon
+              name="upload"
+              class="w-4 h-4 text-libris-neutral-700"
+            />
+          </div>
+          <div>
+            <p class="font-medium text-libris-neutral-900">
+              {{ t`Cargar empresa existente` }}
+            </p>
+            <p class="text-sm text-libris-neutral-500">
+              {{ t`Abrir un archivo de empresa desde tu equipo` }}
+            </p>
+          </div>
+        </div>
+
+        <!-- ── Crear demo (solo cuando no hay empresas) ── -->
+        <div
+          v-if="!files?.length"
+          class="libris-card-secondary window-no-drag"
+          :class="creatingDemo ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'"
+          @click="createDemo"
+        >
+          <div
+            class="
+              w-10 h-10 rounded-full
+              bg-libris-neutral-100
+              flex-center flex-shrink-0
+            "
+          >
+            <feather-icon
+              name="monitor"
+              class="w-4 h-4 text-libris-neutral-700"
+            />
+          </div>
+          <div>
+            <p class="font-medium text-libris-neutral-900">
+              {{ t`Crear demo` }}
+            </p>
+            <p class="text-sm text-libris-neutral-500">
+              {{ t`Crear una empresa demo para explorar Libris` }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Bottom row: language + demo shortcut ── -->
+      <div class="flex items-center justify-between mt-6 window-no-drag">
         <LanguageSelector v-show="!creatingDemo" class="text-sm w-28" />
         <button
           v-if="files?.length"
-          class="
-            text-sm
-            bg-gray-100
-            dark:bg-gray-890
-            hover:bg-gray-200
-            dark:hover:bg-gray-900
-            rounded
-            px-4
-            py-1.5
-            w-auto
-            h-8
-            no-scrollbar
-            overflow-x-auto
-            whitespace-nowrap
-          "
+          class="text-sm text-libris-neutral-500 hover:text-libris-neutral-700 px-3 py-1"
           :disabled="creatingDemo"
           @click="createDemo"
         >
-          {{ creatingDemo ? t`Please Wait` : t`Create Demo` }}
+          {{ creatingDemo ? t`Please Wait` : t`Crear demo` }}
         </button>
       </div>
+
+      <!-- ── Footer ── -->
+      <p
+        class="text-xs text-libris-neutral-500 text-center mt-8 select-none"
+        style="opacity: 0.5"
+      >
+        Libris v{{ version }} · Hecho en México
+      </p>
     </div>
+
+    <!-- Loading overlay (creatingDemo) -->
     <Loading
       v-if="creatingDemo"
       :open="creatingDemo"
@@ -261,7 +190,7 @@
       :message="creationMessage"
     />
 
-    <!-- Base Count Selection when Dev -->
+    <!-- Dev: base count modal -->
     <Modal :open-modal="openModal" @closemodal="openModal = false">
       <div class="p-4 text-gray-900 dark:text-gray-100 w-form">
         <h2 class="text-xl font-semibold select-none">Set Base Count</h2>
@@ -306,6 +235,7 @@
     </Modal>
   </div>
 </template>
+
 <script lang="ts">
 import { setupDummyInstance } from 'dummy';
 import { t } from 'fyo';
@@ -322,6 +252,7 @@ import { updateConfigFiles } from 'src/utils/misc';
 import { deleteDb, getSavePath, getSelectedFilePath } from 'src/utils/ui';
 import type { ConfigFilesWithModified } from 'utils/types';
 import { defineComponent } from 'vue';
+import { version } from '../../package.json';
 
 export default defineComponent({
   name: 'DatabaseSelector',
@@ -335,6 +266,7 @@ export default defineComponent({
   emits: ['file-selected', 'new-database'],
   data() {
     return {
+      version,
       openModal: false,
       baseCount: 100,
       creationMessage: '',
@@ -343,6 +275,7 @@ export default defineComponent({
       loadingDatabase: false,
       files: [],
     } as {
+      version: string;
       openModal: boolean;
       baseCount: number;
       creationMessage: string;
@@ -468,3 +401,81 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+/* Column: max-width centered, comfortable padding */
+.ds-column {
+  max-width: 520px;
+  padding: 2rem 1rem;
+}
+
+/* Company list: scrollable when many entries */
+.ds-list {
+  max-height: 420px;
+}
+
+/* ── Existing company card ── */
+.libris-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--libris-neutral-0);
+  border: 1px solid var(--libris-neutral-200);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.libris-card:hover {
+  background-color: var(--libris-neutral-100);
+  border-color: var(--libris-purple-deep);
+}
+
+/* ── Nueva empresa card (dashed → gradient on hover) ── */
+.libris-card-new {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: 1.5px dashed var(--libris-neutral-200);
+  color: var(--libris-neutral-700);
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.libris-card-new:hover {
+  background: var(--libris-gradient);
+  border-color: transparent;
+  color: white;
+}
+
+/* ── Secondary action cards ── */
+.libris-card-secondary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--libris-neutral-0);
+  border: 1px solid var(--libris-neutral-200);
+  transition: background-color 150ms ease;
+}
+.libris-card-secondary:hover {
+  background-color: var(--libris-neutral-100);
+}
+
+/* ── Delete button inside company card ── */
+.libris-delete-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--libris-neutral-500);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.libris-delete-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--libris-error);
+}
+</style>
