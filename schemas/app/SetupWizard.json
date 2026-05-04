@@ -7,83 +7,88 @@
   "fields": [
     {
       "fieldname": "logo",
-      "label": "Company Logo",
+      "label": "Logo de la empresa",
       "fieldtype": "AttachImage",
-      "section": "Default"
+      "section": "Empresa"
     },
     {
       "fieldname": "companyName",
-      "label": "Company Name",
-      "placeholder": "Company Name",
+      "label": "Nombre de la empresa",
+      "placeholder": "Mi Empresa S.A. de C.V.",
       "fieldtype": "Data",
       "required": true,
-      "section": "Default"
+      "section": "Empresa"
     },
     {
       "fieldname": "fullname",
-      "label": "Full Name",
+      "label": "Nombre completo",
       "fieldtype": "Data",
-      "placeholder": "John Doe",
-      "required": true
+      "placeholder": "Juan García López",
+      "required": true,
+      "section": "Empresa"
     },
     {
       "fieldname": "email",
-      "label": "Email",
+      "label": "Correo electrónico",
       "fieldtype": "Data",
-      "placeholder": "john@doe.com",
-      "required": true
+      "placeholder": "juan@miempresa.com",
+      "required": true,
+      "section": "Empresa"
     },
     {
       "fieldname": "country",
-      "label": "Country",
+      "label": "País",
       "fieldtype": "AutoComplete",
-      "placeholder": "Select Country",
-      "section": "Locale",
-      "required": true
+      "placeholder": "México",
+      "section": "Localización",
+      "required": true,
+      "default": "Mexico",
+      "readOnly": true
     },
     {
       "fieldname": "currency",
-      "label": "Currency",
+      "label": "Moneda",
       "fieldtype": "AutoComplete",
-      "placeholder": "Currency",
-      "section": "Locale",
-      "required": true
+      "placeholder": "MXN",
+      "section": "Localización",
+      "required": true,
+      "readOnly": true
     },
     {
       "fieldname": "bankName",
-      "label": "Bank Name",
+      "label": "Banco",
       "fieldtype": "Data",
-      "placeholder": "Prime Bank",
-      "section": "Accounting",
+      "placeholder": "BBVA / Banamex / Santander",
+      "section": "Contabilidad",
       "required": true
     },
     {
       "fieldname": "chartOfAccounts",
-      "label": "Chart of Accounts",
+      "label": "Plan de cuentas",
       "fieldtype": "AutoComplete",
-      "placeholder": "Select CoA",
-      "section": "Accounting",
+      "placeholder": "Mexico - Plan de Cuentas",
+      "section": "Contabilidad",
       "required": true
     },
     {
       "fieldname": "fiscalYearStart",
-      "label": "Fiscal Year Start Date",
-      "placeholder": "Fiscal Year Start Date",
+      "label": "Inicio del año fiscal",
+      "placeholder": "Inicio del año fiscal",
       "fieldtype": "Date",
-      "section": "Accounting",
+      "section": "Contabilidad",
       "required": true
     },
     {
       "fieldname": "fiscalYearEnd",
-      "label": "Fiscal Year End Date",
-      "placeholder": "Fiscal Year End Date",
+      "label": "Fin del año fiscal",
+      "placeholder": "Fin del año fiscal",
       "fieldtype": "Date",
-      "section": "Accounting",
+      "section": "Contabilidad",
       "required": true
     },
     {
       "fieldname": "completed",
-      "label": "Completed",
+      "label": "Completado",
       "fieldtype": "Check",
       "hidden": true,
       "readOnly": true
