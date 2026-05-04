@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" fill="none" role="img" aria-label="Libris logo – dark variant">
+  <!-- Mark: white circle, "L" in purple — intended for dark backgrounds -->
+  <circle cx="24" cy="24" r="20" fill="#FFFFFF"/>
+  <text x="24" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="22" fill="#3F1C66">L</text>
+  <!-- Wordmark in white -->
+  <text x="56" y="31" font-family="Inter, sans-serif" font-weight="600" font-size="20" fill="#FFFFFF">libris</text>
+</svg>
