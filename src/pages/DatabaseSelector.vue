@@ -24,7 +24,7 @@
           class="font-semibold text-libris-neutral-900"
           style="font-size: 32px; line-height: 1.1"
         >
-          Libris
+          
         </h1>
         <p class="text-sm text-libris-neutral-500 text-center">
           {{ t`Elige una empresa para continuar o crea una nueva` }}

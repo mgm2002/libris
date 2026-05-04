@@ -35,8 +35,8 @@ export class Main {
 
   constructor() {
     this.icon = this.isDevelopment
-      ? path.resolve('./build/icon.png')
-      : path.join(__dirname, 'icons', '512x512.png');
+      ? path.resolve('./icon.svg')
+      : path.join(__dirname, 'icon.svg');
 
     protocol.registerSchemesAsPrivileged([
       { scheme: 'app', privileges: { secure: true, standard: true } },

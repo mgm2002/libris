@@ -20,14 +20,15 @@ import { setLanguageMap } from './utils/language';
   }
   fyo.store.language = language || 'English';
 
-  registerIpcRendererListeners();
   const { isDevelopment, platform, version } = await ipc.getEnv();
 
   fyo.store.isDevelopment = isDevelopment;
+  fyo.store.skipTelemetryLogging = isDevelopment;
   fyo.store.appVersion = version;
   fyo.store.platform = platform;
   const platformName = getPlatformName(platform);
 
+  registerIpcRendererListeners();
   setOnWindow(isDevelopment);
 
   const app = createApp({

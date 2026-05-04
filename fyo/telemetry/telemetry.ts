@@ -51,6 +51,9 @@ export class TelemetryManager {
   }
 
   async start(isOpened?: boolean) {
+    if (this.fyo.store.skipTelemetryLogging) {
+      return;
+    }
     this.#started = true;
     await this.#setCreds();
 
@@ -71,6 +74,9 @@ export class TelemetryManager {
   }
 
   log(verb: Verb, noun: Noun, more?: Record<string, unknown>) {
+    if (this.fyo.store.skipTelemetryLogging) {
+      return;
+    }
     if (!this.#started && this.fyo.db.isConnected) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       this.start().then(() => this.#sendBeacon(verb, noun, more));
@@ -81,6 +87,9 @@ export class TelemetryManager {
   }
 
   async logOpened() {
+    if (this.fyo.store.skipTelemetryLogging) {
+      return;
+    }
     await this.#setCreds();
     this.#sendBeacon(Verb.Opened, 'app');
   }

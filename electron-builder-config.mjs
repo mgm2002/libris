@@ -34,7 +34,7 @@ const frappeBooksConfig = {
     type: 'distribution',
     artifactName: '${productName}-v${version}-mac-${arch}.${ext}',
     category: 'public.app-category.finance',
-    icon: 'build/icon.icns',
+    icon: 'icon.svg',
     notarize: {
       teamId: process.env.APPLE_TEAM_ID || '',
     },
@@ -49,7 +49,7 @@ const frappeBooksConfig = {
     publisherName: 'Frappe Technologies Pvt. Ltd.',
     artifactName: '${productName}-v${version}-windows-${arch}.${ext}',
     signDlls: true,
-    icon: 'build/icon.ico',
+    icon: 'icon.svg',
     publish: ['github'],
     target: [
       {
@@ -66,12 +66,12 @@ const frappeBooksConfig = {
     oneClick: false,
     perMachine: false,
     allowToChangeInstallationDirectory: true,
-    installerIcon: 'build/installericon.ico',
-    uninstallerIcon: 'build/uninstallericon.ico',
+    installerIcon: 'icon.svg',
+    uninstallerIcon: 'icon.svg',
     publish: ['github'],
   },
   linux: {
-    icon: 'build/icons',
+    icon: 'icon.svg',
     artifactName: '${productName}-v${version}-linux-${arch}.${ext}',
     category: 'Finance',
     publish: ['github'],
