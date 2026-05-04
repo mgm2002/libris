@@ -1,49 +1,220 @@
 /**
  * c_UsoCFDI — Catálogo de usos del CFDI (CFDI 4.0).
  *
- * Fuente: Anexo 20 del SAT, catálogo c_UsoCFDI vigente 2024.
+ * Fuente: Anexo 20, catálogo c_UsoCFDI. Vigente 2024-2025.
  * El uso CFDI lo elige el receptor; el emisor lo plasma en el XML.
  *
- * Nota: algunos usos solo aplican a persona física (PF) o moral (PM).
- * "S01" (Sin efectos fiscales) es el default para público general (XAXX010101000).
+ * Notas:
+ *  - Los usos D01–D10 son deducciones personales; solo aplican a persona física.
+ *  - "S01" (Sin efectos fiscales) es el default para público general
+ *    (RFC XAXX010101000).
+ *  - "CP01" (Pagos) se usa en el complemento de pago (PPD).
+ *  - "CN01" (Nómina) solo aplica en el complemento de nómina.
  */
 
 import type { SATCatalogEntry } from './types';
 import { catalogToMap } from './types';
 
 export interface UsoCFDIEntry extends SATCatalogEntry {
-  /** Persona física puede usar este código. */
-  pf: boolean;
-  /** Persona moral puede usar este código. */
-  pm: boolean;
+  /** Aplica a persona física. */
+  aplicaFisica: boolean;
+  /** Aplica a persona moral. */
+  aplicaMoral: boolean;
 }
 
-export const USO_CFDI: UsoCFDIEntry[] = [
-  { clave: 'G01', descripcion: 'Adquisición de mercancias',                         pf: true,  pm: true  },
-  { clave: 'G02', descripcion: 'Devoluciones, descuentos o bonificaciones',          pf: true,  pm: true  },
-  { clave: 'G03', descripcion: 'Gastos en general',                                  pf: true,  pm: true  },
-  { clave: 'I01', descripcion: 'Construcciones',                                     pf: true,  pm: true  },
-  { clave: 'I02', descripcion: 'Mobilario y equipo de oficina por inversiones',      pf: true,  pm: true  },
-  { clave: 'I03', descripcion: 'Equipo de transporte',                               pf: true,  pm: true  },
-  { clave: 'I04', descripcion: 'Equipo de computo y accesorios',                     pf: true,  pm: true  },
-  { clave: 'I05', descripcion: 'Dados, troqueles, moldes, matrices y herramental',   pf: true,  pm: true  },
-  { clave: 'I06', descripcion: 'Comunicaciones telefónicas',                         pf: true,  pm: true  },
-  { clave: 'I07', descripcion: 'Comunicaciones satelitales',                         pf: true,  pm: true  },
-  { clave: 'I08', descripcion: 'Otra maquinaria y equipo',                           pf: true,  pm: true  },
-  { clave: 'D01', descripcion: 'Honorarios médicos, dentales y gastos hospitalarios',pf: true,  pm: false },
-  { clave: 'D02', descripcion: 'Gastos médicos por incapacidad o discapacidad',      pf: true,  pm: false },
-  { clave: 'D03', descripcion: 'Gastos funerales',                                   pf: true,  pm: false },
-  { clave: 'D04', descripcion: 'Donativos',                                          pf: true,  pm: false },
-  { clave: 'D05', descripcion: 'Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)', pf: true, pm: false },
-  { clave: 'D06', descripcion: 'Aportaciones voluntarias al SAR',                   pf: true,  pm: false },
-  { clave: 'D07', descripcion: 'Primas por seguros de gastos médicos',               pf: true,  pm: false },
-  { clave: 'D08', descripcion: 'Gastos de transportación escolar obligatoria',       pf: true,  pm: false },
-  { clave: 'D09', descripcion: 'Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones', pf: true, pm: false },
-  { clave: 'D10', descripcion: 'Pagos por servicios educativos (colegiaturas)',      pf: true,  pm: false },
-  { clave: 'S01', descripcion: 'Sin efectos fiscales',                               pf: true,  pm: true  },
-  { clave: 'CP01', descripcion: 'Pagos',                                             pf: true,  pm: true  },
-  { clave: 'CN01', descripcion: 'Nómina',                                            pf: true,  pm: false },
-];
+export const USO_CFDI: ReadonlyArray<UsoCFDIEntry> = [
+  // ── Adquisiciones e inversiones ──────────────────────────────────────────
+  {
+    clave: 'G01',
+    descripcion: 'Adquisición de mercancías',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'G02',
+    descripcion: 'Devoluciones, descuentos o bonificaciones',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'G03',
+    descripcion: 'Gastos en general',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I01',
+    descripcion: 'Construcciones',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I02',
+    descripcion: 'Mobiliario y equipo de oficina por inversiones',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I03',
+    descripcion: 'Equipo de transporte',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I04',
+    descripcion: 'Equipo de cómputo y accesorios',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I05',
+    descripcion: 'Dados, troqueles, moldes, matrices y herramental',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I06',
+    descripcion: 'Comunicaciones telefónicas',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I07',
+    descripcion: 'Comunicaciones satelitales',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'I08',
+    descripcion: 'Otra maquinaria y equipo',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  // ── Deducciones personales (solo persona física) ──────────────────────────
+  {
+    clave: 'D01',
+    descripcion: 'Honorarios médicos, dentales y gastos hospitalarios',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D02',
+    descripcion: 'Gastos médicos por incapacidad o discapacidad',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D03',
+    descripcion: 'Gastos funerales',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D04',
+    descripcion: 'Donativos',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D05',
+    descripcion: 'Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D06',
+    descripcion: 'Aportaciones voluntarias al SAR',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D07',
+    descripcion: 'Primas por seguros de gastos médicos',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D08',
+    descripcion: 'Gastos de transportación escolar obligatoria',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D09',
+    descripcion: 'Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'D10',
+    descripcion: 'Pagos por servicios educativos (colegiaturas)',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+  // ── Usos especiales ───────────────────────────────────────────────────────
+  {
+    clave: 'S01',
+    descripcion: 'Sin efectos fiscales',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'CP01',
+    descripcion: 'Pagos',
+    aplicaFisica: true,
+    aplicaMoral: true,
+    vigenteDesde: '2022-01-01',
+  },
+  {
+    clave: 'CN01',
+    descripcion: 'Nómina',
+    aplicaFisica: true,
+    aplicaMoral: false,
+    vigenteDesde: '2022-01-01',
+  },
+] as const;
 
-/** Mapa clave → descripción para lookups rápidos. */
+/** Mapa clave → descripción para lookups O(1). */
 export const USO_CFDI_MAP = catalogToMap(USO_CFDI);
+
+/** Devuelve la entrada por clave, o undefined si no existe. */
+export function getByClave(clave: string): UsoCFDIEntry | undefined {
+  return USO_CFDI.find((e) => e.clave === clave);
+}
+
+/** Devuelve todas las entradas. */
+export function getAll(): ReadonlyArray<UsoCFDIEntry> {
+  return USO_CFDI;
+}
+
+/** Devuelve solo los usos aplicables a persona física. */
+export function getParaPersonaFisica(): ReadonlyArray<UsoCFDIEntry> {
+  return USO_CFDI.filter((e) => e.aplicaFisica);
+}
+
+/** Devuelve solo los usos aplicables a persona moral. */
+export function getParaPersonaMoral(): ReadonlyArray<UsoCFDIEntry> {
+  return USO_CFDI.filter((e) => e.aplicaMoral);
+}

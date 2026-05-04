@@ -1,33 +1,34 @@
 /**
- * Tipos compartidos para los catálogos del SAT.
+ * Tipos compartidos para los catálogos del SAT (CFDI 4.0).
  *
- * Todos los catálogos siguen la estructura c_<NombreCatalogo> publicada por el SAT
- * en https://www.sat.gob.mx/consultas/21345/descarga-el-complemento-de-cfdi
- *
- * Se publican catálogos nuevos con cada versión del complemento. La versión base
- * aquí es CFDI 4.0 (publicada enero 2022, obligatoria julio 2023).
+ * Fuente: Anexo 20 del SAT — catálogos vigentes 2024-2025.
+ * https://www.sat.gob.mx/consultas/21345/descarga-el-complemento-de-cfdi
  */
 
-/** Entrada genérica de cualquier catálogo SAT. */
+/** Entrada base de cualquier catálogo SAT. */
 export interface SATCatalogEntry {
   /** Clave del catálogo (ej. "601", "G03", "01"). */
   clave: string;
-  /** Descripción en español. */
+  /** Descripción oficial en español. */
   descripcion: string;
-  /** Si el registro está vigente (algunos se deprecan pero siguen aceptándose en timbrado). */
-  vigente?: boolean;
+  /** Fecha de inicio de vigencia (ISO date, ej. "2022-01-01"). */
+  vigenteDesde?: string;
+  /** Fecha de fin de vigencia (ISO date) o null si sigue vigente. */
+  vigenteHasta?: string | null;
 }
 
-/** Entrada de catálogo con fecha de vigencia (aplica a c_Moneda, c_Pais, etc.). */
-export interface SATCatalogEntryFecha extends SATCatalogEntry {
-  fechaInicioVigencia?: string; // ISO date
-  fechaFinVigencia?: string;    // ISO date
-}
-
-/** Mapa de clave → descripción para búsquedas O(1). */
+/** Mapa clave → descripción para búsquedas O(1). */
 export type SATCatalogMap = Record<string, string>;
 
-/** Función utilitaria: convierte un array de entradas a mapa clave→descripción. */
-export function catalogToMap(entries: SATCatalogEntry[]): SATCatalogMap {
+/** Convierte un array de entradas a mapa clave→descripción. */
+export function catalogToMap(entries: readonly SATCatalogEntry[]): SATCatalogMap {
   return Object.fromEntries(entries.map((e) => [e.clave, e.descripcion]));
+}
+
+/** Devuelve true si la entrada está vigente a la fecha dada (default: hoy). */
+export function esVigente(entry: SATCatalogEntry, fecha = new Date()): boolean {
+  if (entry.vigenteHasta != null) {
+    return new Date(entry.vigenteHasta) >= fecha;
+  }
+  return true;
 }
