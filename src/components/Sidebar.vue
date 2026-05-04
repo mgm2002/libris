@@ -151,6 +151,11 @@
         <p>{{ t`Report Issue` }}</p>
       </button>
 
+      <button class="libris-footer-btn" @click="viewAbout = true">
+        <feather-icon name="info" class="h-4 w-4 flex-shrink-0" />
+        <p>{{ t`Acerca de` }}</p>
+      </button>
+
       <p
         v-if="showDevMode"
         class="text-xs text-white text-opacity-50 select-none cursor-pointer"
@@ -172,6 +177,8 @@
     <Modal :open-modal="viewShortcuts" @closemodal="viewShortcuts = false">
       <ShortcutsHelper class="w-form" />
     </Modal>
+
+    <AboutDialog :open="viewAbout" @close="viewAbout = false" />
   </div>
 </template>
 
@@ -186,6 +193,7 @@ import { routeTo, toggleSidebar } from 'src/utils/ui';
 import { defineComponent, inject } from 'vue';
 import router from '../router';
 import Icon from './Icon.vue';
+import AboutDialog from './AboutDialog.vue';
 import Modal from './Modal.vue';
 import ShortcutsHelper from './ShortcutsHelper.vue';
 
@@ -193,6 +201,7 @@ const COMPONENT_NAME = 'Sidebar';
 
 export default defineComponent({
   components: {
+    AboutDialog,
     Icon,
     Modal,
     ShortcutsHelper,
@@ -212,12 +221,14 @@ export default defineComponent({
       companyName: '',
       groups: [],
       viewShortcuts: false,
+      viewAbout: false,
       activeGroup: null,
       showDevMode: false,
     } as {
       companyName: string;
       groups: SidebarConfig;
       viewShortcuts: boolean;
+      viewAbout: boolean;
       activeGroup: null | SidebarRoot;
       showDevMode: boolean;
     };

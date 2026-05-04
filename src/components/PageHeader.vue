@@ -5,12 +5,12 @@
       flex
       justify-between
       items-center
-      h-row-largest
+      h-14
       flex-shrink-0
-      dark:bg-gray-875
+      bg-libris-neutral-0
     "
     :class="[
-      border ? 'border-b dark:border-gray-800' : '',
+      border ? 'border-b border-libris-neutral-200' : '',
       platform !== 'Windows' ? 'window-drag' : '',
     ]"
   >
@@ -35,7 +35,7 @@
           font-semibold
           select-none
           whitespace-nowrap
-          dark:text-white
+          text-libris-neutral-900
         "
       >
         {{ title }}
@@ -49,7 +49,7 @@
 
     <!-- Right (regular) Slot -->
     <div
-      class="flex items-stretch window-no-drag gap-2 ms-auto"
+      class="flex items-stretch window-no-drag gap-3 ms-auto"
       :class="platform === 'Mac' && languageDirection === 'rtl' ? 'me-18' : ''"
     >
       <slot />
