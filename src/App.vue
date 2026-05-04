@@ -36,6 +36,11 @@
       @setup-canceled="showDbSelector"
     />
 
+    <!-- Splash screen — fixed+z-50 so it overlays everything during boot -->
+    <Transition name="splash-exit">
+      <Splash v-if="activeScreen === 'Splash'" class="z-50" />
+    </Transition>
+
     <!-- Render target for toasts -->
     <div
       id="toast-container"
@@ -50,6 +55,7 @@ import { ModelNameEnum } from 'models/types';
 import { systemLanguageRef } from 'src/utils/refs';
 import { defineComponent, provide, ref, Ref } from 'vue';
 import WindowsTitleBar from './components/WindowsTitleBar.vue';
+import Splash from './pages/Splash/Splash.vue';
 import { handleErrorWithDialog } from './errorHandling';
 import { fyo } from './initFyo';
 import DatabaseSelector from './pages/DatabaseSelector.vue';
@@ -77,6 +83,7 @@ import {
 import { ERPNextSyncSettings } from 'models/baseModels/ERPNextSyncSettings/ERPNextSyncSettings';
 
 enum Screen {
+  Splash = 'Splash',
   Desk = 'Desk',
   DatabaseSelector = 'DatabaseSelector',
   SetupWizard = 'SetupWizard',
@@ -85,6 +92,7 @@ enum Screen {
 export default defineComponent({
   name: 'App',
   components: {
+    Splash,
     Desk,
     SetupWizard,
     DatabaseSelector,
@@ -146,12 +154,17 @@ export default defineComponent({
   },
   methods: {
     async setInitialScreen(): Promise<void> {
-      const lastSelectedFilePath = fyo.config.get('lastSelectedFilePath', null);
+      this.activeScreen = Screen.Splash;
 
-      if (
-        typeof lastSelectedFilePath !== 'string' ||
-        !lastSelectedFilePath.length
-      ) {
+      const lastSelectedFilePath = fyo.config.get('lastSelectedFilePath', null);
+      const hasFreshDb =
+        typeof lastSelectedFilePath !== 'string' || !lastSelectedFilePath.length;
+
+      // Show splash for minimum duration: 800ms with existing DB, 1800ms fresh.
+      const minDelay = hasFreshDb ? 1800 : 800;
+      await new Promise<void>((resolve) => setTimeout(resolve, minDelay));
+
+      if (hasFreshDb) {
         this.activeScreen = Screen.DatabaseSelector;
         return;
       }

@@ -1,5 +1,6 @@
 import ChartOfAccounts from 'src/pages/ChartOfAccounts.vue';
 import CommonForm from 'src/pages/CommonForm/CommonForm.vue';
+import Splash from 'src/pages/Splash/Splash.vue';
 import Dashboard from 'src/pages/Dashboard/Dashboard.vue';
 import GetStarted from 'src/pages/GetStarted.vue';
 import ImportWizard from 'src/pages/ImportWizard.vue';
@@ -17,6 +18,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { historyState } from './utils/refs';
 
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/splash',
+    name: 'Splash',
+    component: Splash,
+  },
   {
     path: '/',
     component: Dashboard,
