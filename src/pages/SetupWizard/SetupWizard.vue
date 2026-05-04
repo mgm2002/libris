@@ -1,36 +1,80 @@
 <template>
-  <FormContainer
-    :show-header="false"
-    class="justify-content items-center h-full"
+  <div
+    class="flex h-full"
     :class="{ 'window-drag': platform !== 'Windows' }"
   >
-    <template #body>
-      <FormHeader
-        :form-title="t`Set up your organization`"
+    <!-- ══ LEFT PANEL 40% — brand + motivation ══ -->
+    <div class="libris-left flex flex-col bg-libris-gradient window-drag">
+      <!-- Logo -->
+      <div class="px-10 pt-10">
+        <img
+          src="../../assets/brand/logo-light.svg"
+          alt="Libris"
+          style="height: 80px"
+          class="select-none"
+        />
+      </div>
+
+      <!-- Motivational copy -->
+      <div class="flex-1 flex flex-col justify-center px-10">
+        <h2
+          class="font-semibold text-white mb-4 leading-tight"
+          style="font-size: 26px"
+        >
+          Bienvenido a Libris
+        </h2>
+        <p class="text-white mb-3 leading-relaxed" style="opacity: 0.85; font-size: 15px">
+          Configura tu empresa en menos de 5 minutos.
+        </p>
+        <p class="text-white leading-relaxed" style="opacity: 0.7; font-size: 14px">
+          Diseñado para micro y pequeñas empresas en México.
+        </p>
+      </div>
+
+      <!-- Step indicator dots -->
+      <div class="px-10 pb-10 flex flex-col gap-4">
+        <div class="libris-step">
+          <div class="libris-step-dot libris-step-dot--active" />
+          <span class="text-sm text-white" style="opacity: 0.9">Empresa</span>
+        </div>
+        <div class="libris-step">
+          <div class="libris-step-dot libris-step-dot--active" />
+          <span class="text-sm text-white" style="opacity: 0.9">Localización</span>
+        </div>
+        <div class="libris-step">
+          <div class="libris-step-dot libris-step-dot--active" />
+          <span class="text-sm text-white" style="opacity: 0.9">Contabilidad</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RIGHT PANEL 60% — form ══ -->
+    <div class="libris-right flex flex-col bg-white overflow-hidden window-no-drag">
+      <!-- Form header -->
+      <div
         class="
-          sticky
-          top-0
-          bg-white
-          dark:bg-gray-890
-          border-b
-          dark:border-gray-800
+          flex-shrink-0 sticky top-0 bg-white
+          border-b border-libris-neutral-200
+          px-8 py-5
         "
       >
-      </FormHeader>
+        <h1 class="text-xl font-semibold text-libris-neutral-900 select-none">
+          Configura tu empresa
+        </h1>
+      </div>
 
-      <!-- Section Container -->
+      <!-- Form sections -->
       <div
         v-if="hasDoc"
-        class="overflow-auto custom-scroll custom-scroll-thumb1"
+        class="flex-1 overflow-auto custom-scroll custom-scroll-thumb1 p-8"
       >
         <CommonFormSection
           v-for="([name, fields], idx) in activeGroup.entries()"
           :key="name + idx"
           ref="section"
-          class="p-4"
           :class="
             idx !== 0 && activeGroup.size > 1
-              ? 'border-t dark:border-gray-800'
+              ? 'border-t border-libris-neutral-200 pt-6 mt-6'
               : ''
           "
           :show-title="activeGroup.size > 1 && name !== t`Default`"
@@ -43,50 +87,52 @@
         />
       </div>
 
-      <!-- Buttons Bar -->
+      <!-- Button bar -->
       <div
         class="
-          mt-auto
-          p-4
-          flex
-          items-center
-          justify-between
-          border-t
-          dark:border-gray-800
-          flex-shrink-0
-          sticky
-          bottom-0
-          bg-white
-          dark:bg-gray-890
+          flex-shrink-0 sticky bottom-0 bg-white
+          border-t border-libris-neutral-200
+          px-8 py-4
+          flex items-center
         "
       >
-        <p v-if="loading" class="text-base text-gray-600 dark:text-gray-400">
+        <p
+          v-if="loading"
+          class="text-base text-libris-neutral-500"
+        >
           {{ t`Loading instance...` }}
         </p>
-        <Button
+
+        <button
           v-if="!loading"
-          class="w-24 border dark:border-gray-800"
+          class="libris-btn-ghost"
           @click="cancel"
-          >{{ t`Cancel` }}</Button
         >
-        <Button
-          v-if="fyo.store.isDevelopment && !loading"
-          class="w-24 ml-auto mr-4 border dark:border-gray-800"
-          :disabled="loading"
-          @click="fill"
-          >{{ t`Fill` }}</Button
-        >
-        <Button
-          type="primary"
-          class="w-24"
-          data-testid="submit-button"
-          :disabled="!areAllValuesFilled || loading"
-          @click="submit"
-          >{{ t`Submit` }}</Button
-        >
+          Cancelar
+        </button>
+
+        <div class="flex gap-3 ms-auto">
+          <button
+            v-if="fyo.store.isDevelopment && !loading"
+            class="libris-btn-ghost"
+            :disabled="loading"
+            @click="fill"
+          >
+            {{ t`Fill` }}
+          </button>
+
+          <button
+            class="libris-btn-primary"
+            data-testid="submit-button"
+            :disabled="!areAllValuesFilled || loading"
+            @click="submit"
+          >
+            Siguiente →
+          </button>
+        </div>
       </div>
-    </template>
-  </FormContainer>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { DocValue } from 'fyo/core/types';
@@ -95,9 +141,6 @@ import { Verb } from 'fyo/telemetry/types';
 import { TranslationString } from 'fyo/utils/translation';
 import { ModelNameEnum } from 'models/types';
 import { Field } from 'schemas/types';
-import Button from 'src/components/Button.vue';
-import FormContainer from 'src/components/FormContainer.vue';
-import FormHeader from 'src/components/FormHeader.vue';
 import { getErrorMessage } from 'src/utils';
 import { showDialog } from 'src/utils/interactive';
 import { getSetupWizardDoc } from 'src/utils/misc';
@@ -108,9 +151,6 @@ import CommonFormSection from '../CommonForm/CommonFormSection.vue';
 export default defineComponent({
   name: 'SetupWizard',
   components: {
-    Button,
-    FormContainer,
-    FormHeader,
     CommonFormSection,
   },
   provide() {
@@ -232,3 +272,86 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+/* ── Layout panels ── */
+.libris-left {
+  width: 40%;
+  flex-shrink: 0;
+}
+.libris-right {
+  width: 60%;
+  flex: 1;
+}
+
+/* ── Step indicator ── */
+.libris-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.libris-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+  transition: background 200ms ease;
+}
+.libris-step-dot--active {
+  background: rgba(255, 255, 255, 1);
+  width: 10px;
+  height: 10px;
+}
+
+/* ── Primary button: gradient bg ── */
+.libris-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background: var(--libris-gradient);
+  transition: opacity 150ms ease;
+  border: none;
+}
+.libris-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Ghost button: purple border + text ── */
+.libris-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--libris-purple-deep);
+  border: 1.5px solid var(--libris-purple-deep);
+  background: transparent;
+  transition: background-color 150ms ease;
+}
+.libris-btn-ghost:hover {
+  background-color: var(--libris-neutral-100);
+}
+.libris-btn-ghost:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Form labels: weight 500 via :deep ── */
+.libris-right :deep(.text-gray-600.text-sm.mb-1) {
+  font-weight: 500;
+  color: var(--libris-neutral-700);
+}
+
+/* ── Input focus ring: magenta glow via :deep ── */
+.libris-right :deep(.rounded:focus-within) {
+  box-shadow: 0 0 0 2px rgba(177, 33, 102, 0.2);
+}
+</style>

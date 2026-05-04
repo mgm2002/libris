@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" fill="none" role="img" aria-label="Libris logo">
+  <defs>
+    <linearGradient id="libris-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3F1C66"/>
+      <stop offset="100%" stop-color="#B12166"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark: circle with gradient background -->
+  <circle cx="24" cy="24" r="20" fill="url(#libris-grad)"/>
+  <!-- "L" letterform -->
+  <text x="24" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="22" fill="#FFFFFF">L</text>
+  <!-- Wordmark -->
+  <text x="56" y="31" font-family="Inter, sans-serif" font-weight="600" font-size="20" fill="#3F1C66">libris</text>
+</svg>

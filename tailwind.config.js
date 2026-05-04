@@ -9,6 +9,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
+      mono: ['JetBrains Mono', 'monospace'],
     },
     screens: {
       sm: '640px',
@@ -62,7 +63,34 @@ module.exports = {
       gridColumn: {
         'span-full': '1 / -1',
       },
-      colors,
+      colors: {
+        ...colors,
+        'libris-purple': {
+          deep: '#3F1C66',
+          DEFAULT: '#5B2D8E',
+          light: '#7B4DB5',
+          lighter: '#A07DD4',
+          subtle: '#D4C2EE',
+        },
+        'libris-magenta': {
+          DEFAULT: '#B12166',
+          dark: '#8A1950',
+          light: '#D1548A',
+          subtle: '#EDB8D0',
+        },
+        'libris-neutral': {
+          0: '#FFFFFF',
+          50: '#F7F6F9',
+          100: '#EEECF3',
+          200: '#D9D5E5',
+          500: '#7B6FA0',
+          700: '#4A4068',
+          900: '#1A1428',
+        },
+      },
+      backgroundImage: {
+        'libris-gradient': 'linear-gradient(135deg, #3F1C66 0%, #B12166 100%)',
+      },
     },
   },
   variants: {
